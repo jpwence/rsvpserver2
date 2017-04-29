@@ -36,7 +36,7 @@ app.get("/tables", function(req, res) {
   res.sendFile(path.join(__dirname, "tables.html"));
 });
 
-app.get("/reservation", function(req, res) {
+app.get("/reserve", function(req, res) {
   res.sendFile(path.join(__dirname, "reservation.html"));
 });
 
@@ -58,15 +58,16 @@ app.get("/api/:tables?", function(req, res) {
 });
 
 // Create New tables - takes in JSON input
-app.post("/api/new", function(req, res) {
-  var newcharacter = req.body;
-  newcharacter.routeName = newcharacter.name.replace(/\s+/g, "").toLowerCase();
+app.post("/api/tables", function(req, res) {
+  var newtable = req.body;
+  debugger;
+  newtable.userName = newtable.customerID.replace(/\s+/g, "").toLowerCase();
 
-  console.log(newcharacter);
+  console.log(newtable);
 
-  tables.push(newcharacter);
+  tables.push(newtable);
 
-  res.json(newcharacter);
+  res.json(newtable);
 });
 
 // Starts the server to begin listening
