@@ -17,7 +17,9 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // This was left as a blank array so that we wouldn't have a reserved table
 // =============================================================
-var customers = [];
+var reserved = [];
+
+var waiting = [];
 
 // Routes
 // =============================================================
@@ -37,33 +39,55 @@ app.get("/reserve", function(req, res) {
 
 // Search for Specific Character (or all tables) - provides JSON
 app.get("/api/:tables?", function(req, res) {
-  var chosen = req.params.customers;
+  var chosen = req.params.reserved;
 
   if (chosen) {
     console.log(chosen);
 
-    for (var i = 0; i < customers.length; i++) {
-      if (chosen === customers[i].routeName) {
-       return res.json(customers[i]);
+    for (var i = 0; i < reserved.length; i++) {
+      if (chosen === reserved[i].routeName) {
+       return res.json(reserved[i]);
       }
     }
     return res.json(false);
   }
-  return res.json(customers);
+  return res.json(reserved);
+});
+
+app.get("/api/:waitlist?", function(req, res) {
+  var chosen = req.params.waiting;
+
+  if (chosen) {
+    console.log(chosen);
+
+    for (var i = 0; i < waiting.length; i++) {
+      if (chosen === waiting[i].routeName) {
+       return res.json(waiting[i]);
+      }
+    }
+    return res.json(false);
+  }
+  return res.json(waiting);
 });
 
 // Create New tables - takes in JSON input
 app.post("/api/tables", function(req, res) {
   var newtable = req.body;
 
-  newtable.userName = newtable.customerID.replace(/\s+/g, "").toLowerCase();
+  newtable.customerID = newtable.customerID.replace(/\s+/g, "").toLowerCase();
 
   console.log(newtable);
 
-  customers.push(newtable);
+  if (reserved.length <= 5){
+  	reserved.push(newtable);
+  } else {
+  	waiting.push(newtable);
+  }
 
   res.json(newtable);
 });
+
+
 
 // Starts the server to begin listening
 // =============================================================
