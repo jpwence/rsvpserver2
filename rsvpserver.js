@@ -57,12 +57,16 @@ app.get("/api/tables", function(req, res) {
 });
 
 app.get("/api/waitlist", function(req, res) {
+<<<<<<< HEAD
   var chosen = req.params.reserved;
   var waiting = _.slice(reserved, 5);
 
   console.log('waiting');
   console.log(waiting);
   //console.log(waiting);
+=======
+  var chosen = req.params.waiting;
+>>>>>>> b0080e90e8f21d7fad9981a5b15db5eec6d42955
 
   if (chosen) {
     console.log(chosen);
@@ -85,6 +89,7 @@ app.post("/api/tables", function(req, res) {
 
   console.log(newtable);
 
+<<<<<<< HEAD
   //console.log(reserved.length);
 
   reserved.push(newtable);
@@ -99,6 +104,15 @@ app.post("/api/tables", function(req, res) {
 //   console.log('waiting');
 //   console.log(waiting)
 
+=======
+  if (reserved.length < 5){
+  	reserved.push(newtable);
+  } else {
+  	waiting.push(newtable);
+  }
+console.log(reserved);
+console.log(waiting);
+>>>>>>> b0080e90e8f21d7fad9981a5b15db5eec6d42955
   res.json(newtable);
 });
 
