@@ -15,14 +15,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-// Star Wars tables (DATA)
+// This was left as a blank array so that we wouldn't have a reserved table
 // =============================================================
-var tables = [{
-  username: "",
-  name: "",
-  phoneNumber: "",
-  email: ""
-}];
+var customers = [];
 
 // Routes
 // =============================================================
@@ -42,30 +37,30 @@ app.get("/reserve", function(req, res) {
 
 // Search for Specific Character (or all tables) - provides JSON
 app.get("/api/:tables?", function(req, res) {
-  var chosen = req.params.tables;
+  var chosen = req.params.customers;
 
   if (chosen) {
     console.log(chosen);
 
-    for (var i = 0; i < tables.length; i++) {
-      if (chosen === tables[i].routeName) {
-       return res.json(tables[i]);
+    for (var i = 0; i < customers.length; i++) {
+      if (chosen === customers[i].routeName) {
+       return res.json(customers[i]);
       }
     }
     return res.json(false);
   }
-  return res.json(tables);
+  return res.json(customers);
 });
 
 // Create New tables - takes in JSON input
 app.post("/api/tables", function(req, res) {
   var newtable = req.body;
-  debugger;
+
   newtable.userName = newtable.customerID.replace(/\s+/g, "").toLowerCase();
 
   console.log(newtable);
 
-  tables.push(newtable);
+  customers.push(newtable);
 
   res.json(newtable);
 });
