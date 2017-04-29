@@ -126,6 +126,7 @@
 				console.log("------------------------------------")
 
 				// Loop through and display each of the customers
+				//if(waitlistData.length > 5){
 				for (var i=0; i<waitlistData.length; i++){
 
 					// Create the HTML Well (Section) and Add the table content for each reserved table
@@ -139,6 +140,7 @@
 					// Then display the remaining fields in the HTML (Section Name, Date, URL)
 					$("#waitlistWell-"+ i+1).append('<h2><span class="label label-primary">' + tableNumber + "</span> | " + waitlistData[i].customerID + "</h2>");
 				}
+				//}
 			});
 	}
 

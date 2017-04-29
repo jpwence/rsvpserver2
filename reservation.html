@@ -110,6 +110,7 @@
 
 	    $.post(currentURL + "/api/tables", newReservation,
 	    function(data){
+	    	console.log('here');
 
 	    	// If a table is available... tell user they are booked.
 	    	if(data == true){

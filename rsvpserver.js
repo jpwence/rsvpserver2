@@ -3,6 +3,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
+const _ = require('lodash');
 
 // Sets up the Express App
 // =============================================================
@@ -19,7 +20,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 // =============================================================
 var reserved = [];
 
-var waiting = [];
+//var waiting = [];
 
 // Routes
 // =============================================================
@@ -38,24 +39,30 @@ app.get("/reserve", function(req, res) {
 });
 
 // Search for Specific Character (or all tables) - provides JSON
-app.get("/api/:tables?", function(req, res) {
+app.get("/api/tables", function(req, res) {
   var chosen = req.params.reserved;
+  var reserves = _.take(reserved, 5);
 
   if (chosen) {
     console.log(chosen);
 
-    for (var i = 0; i < reserved.length; i++) {
-      if (chosen === reserved[i].routeName) {
-       return res.json(reserved[i]);
+    for (var i = 0; i < reserves.length; i++) {
+      if (chosen === reserves[i].routeName) {
+       return res.json(reserves[i]);
       }
     }
     return res.json(false);
   }
-  return res.json(reserved);
+  return res.json(reserves);
 });
 
-app.get("/api/:waitlist?", function(req, res) {
-  var chosen = req.params.waiting;
+app.get("/api/waitlist", function(req, res) {
+  var chosen = req.params.reserved;
+  var waiting = _.slice(reserved, 5);
+
+  console.log('waiting');
+  console.log(waiting);
+  //console.log(waiting);
 
   if (chosen) {
     console.log(chosen);
@@ -74,17 +81,31 @@ app.get("/api/:waitlist?", function(req, res) {
 app.post("/api/tables", function(req, res) {
   var newtable = req.body;
 
-  newtable.customerID = newtable.customerID.replace(/\s+/g, "").toLowerCase();
+  //newtable.customerID = newtable.customerID.replace(/\s+/g, "").toLowerCase();
 
   console.log(newtable);
 
-  if (reserved.length <= 5){
-  	reserved.push(newtable);
-  } else {
-  	waiting.push(newtable);
-  }
+  //console.log(reserved.length);
+
+  reserved.push(newtable);
+  // if (reserved.length <= 5){
+  //   reserved.push(newtable);
+  // } else {
+  //   waiting.push(newtable);
+  // }
+
+// console.log('reserved');
+//   console.log(reserved);
+//   console.log('waiting');
+//   console.log(waiting)
 
   res.json(newtable);
+});
+
+
+// Create New tables - takes in JSON input
+app.post("/api/clear", function(req, res) {
+  reserved = [];
 });
 
 
