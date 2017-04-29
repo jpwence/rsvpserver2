@@ -38,7 +38,7 @@ app.get("/reserve", function(req, res) {
 });
 
 // Search for Specific Character (or all tables) - provides JSON
-app.get("/api/:tables?", function(req, res) {
+app.get("/api/tables", function(req, res) {
   var chosen = req.params.reserved;
 
   if (chosen) {
@@ -54,7 +54,7 @@ app.get("/api/:tables?", function(req, res) {
   return res.json(reserved);
 });
 
-app.get("/api/:waitlist?", function(req, res) {
+app.get("/api/waitlist", function(req, res) {
   var chosen = req.params.waiting;
 
   if (chosen) {
@@ -78,12 +78,13 @@ app.post("/api/tables", function(req, res) {
 
   console.log(newtable);
 
-  if (reserved.length <= 5){
+  if (reserved.length < 5){
   	reserved.push(newtable);
   } else {
   	waiting.push(newtable);
   }
-
+console.log(reserved);
+console.log(waiting);
   res.json(newtable);
 });
 
